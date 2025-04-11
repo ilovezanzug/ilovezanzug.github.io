@@ -19,23 +19,15 @@
       margin-bottom: 20px;
     }
 
-    /* Scrapbook Modal Styles */
-    #scrapbookModal {
-      display: block;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      height: 80%;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 1000;
-      overflow: auto;
+    /* Scrapbook Page Styles */
+    #scrapbookPage {
+      margin: 0 auto;
+      max-width: 900px;
       padding: 20px;
-      border-radius: 16px;
       text-align: center;
     }
 
+    /* Controls (Next/Previous Buttons) */
     .controls {
       margin-bottom: 20px;
       display: flex;
@@ -57,6 +49,16 @@
       background-color: #ff3385;
     }
 
+    /* Song Box */
+    #songBox {
+      width: 100%;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: #444;
+      border-radius: 8px;
+      text-align: center;
+    }
+
     /* Image Box Style */
     #pageDisplay {
       background: #333;
@@ -69,7 +71,6 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
-      transition: background-color 0.5s ease;
     }
 
     #pageDisplay img {
@@ -106,7 +107,7 @@
       100% { transform: scale(1); }
     }
 
-    /* Color Picker for Background */
+    /* Color Picker for Song Box */
     .color-picker {
       margin: 20px auto;
       padding: 5px;
@@ -126,8 +127,8 @@
 <body>
   <h1>Scrapbook</h1>
 
-  <!-- Scrapbook Modal -->
-  <div id="scrapbookModal">
+  <!-- Scrapbook Page Content -->
+  <div id="scrapbookPage">
     <div class="controls">
       <button onclick="prevPage()">⬅ Prev</button>
       <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
@@ -135,123 +136,121 @@
       <button onclick="closeScrapbook()" style="float: right; background: #ff69b4; color: black;">✕ Close</button>
     </div>
 
-    <!-- Color Picker for Each Song -->
-    <input type="color" id="colorPicker" class="color-picker" onchange="changeImageBoxColor(this.value)" />
+    <!-- Song Box -->
+    <div id="songBox">
+      <!-- Color Picker for Song Box -->
+      <input type="color" id="colorPicker" class="color-picker" onchange="changeSongBoxColor(this.value)" />
+      <!-- Song Name -->
+      <div id="songName" class="song-name">Song 1</div>
+      <!-- Play Button -->
+      <div id="playButton" class="play-button" style="cursor: pointer;" onclick="togglePlay()">▶ Play</div>
+    </div>
 
     <!-- Image Box with Play Button -->
     <div id="pageDisplay">
       <span id="placeholder" style="color: #888;">No image uploaded yet.</span>
-      <div id="playButton" class="play-button" style="display: none;" onclick="togglePlay()">▶ Play</div>
     </div>
-
-    <!-- Song Name -->
-    <div id="songName" class="song-name">Song 1</div>
-
-    <!-- External Script for Functionality -->
-    <script>
-      let currentPage = 1;
-      let isPlaying = false;
-      let audio = new Audio(); // No default song yet
-      let activeSong = '';
-      let activeImage = '';
-      const imageLinks = {
-        1: { image: "images/test1.jpg", song: "songs/song1.mp3", songName: "Song 1", color: "#333" },
-        2: { image: "images/test2.jpg", song: "songs/song2.mp3", songName: "Song 2", color: "#444" },
-        3: { image: "images/test3.jpg", song: "songs/song3.mp3", songName: "Song 3", color: "#555" },
-      };
-
-      // Open the scrapbook modal
-      function openScrapbook() {
-        document.getElementById("scrapbookModal").style.display = "block";
-        loadImage();
-      }
-
-      // Close the scrapbook modal
-      function closeScrapbook() {
-        document.getElementById("scrapbookModal").style.display = "none";
-        audio.pause(); // Pause the audio when closing the modal
-        isPlaying = false;
-      }
-
-      // Load the image, song, and song name
-      function loadImage() {
-        const pageDisplay = document.getElementById("pageDisplay");
-        const pageNumber = document.getElementById("pageNumber");
-        const songNameDisplay = document.getElementById("songName");
-        const currentData = imageLinks[currentPage];
-
-        if (currentData) {
-          // Set image and song
-          activeImage = currentData.image;
-          activeSong = currentData.song;
-          const currentColor = currentData.color;
-          const songName = currentData.songName;
-
-          pageDisplay.innerHTML = `<img src="${activeImage}" alt="Scrapbook Image" />`;
-          pageDisplay.style.backgroundColor = currentColor; // Set background color for the image box
-          songNameDisplay.textContent = songName; // Display the song name
-          togglePlayButton(true);
-          
-          // Set color picker to the page's color
-          document.getElementById('colorPicker').value = currentColor;
-        } else {
-          pageDisplay.innerHTML = `<span id="placeholder" style="color: #888;">No image uploaded yet.</span>`;
-        }
-
-        pageNumber.textContent = `Page ${currentPage}`;
-      }
-
-      // Show or hide the play button
-      function togglePlayButton(show) {
-        const playButton = document.getElementById("playButton");
-        if (show) {
-          playButton.style.display = "block";
-        } else {
-          playButton.style.display = "none";
-        }
-      }
-
-      // Go to the next page
-      function nextPage() {
-        currentPage++;
-        if (!imageLinks[currentPage]) currentPage = 1; // Loop back to first page
-        loadImage();
-      }
-
-      // Go to the previous page
-      function prevPage() {
-        currentPage--;
-        if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to last page
-        loadImage();
-      }
-
-      // Change the color of the image box
-      function changeImageBoxColor(color) {
-        const pageDisplay = document.getElementById("pageDisplay");
-        pageDisplay.style.backgroundColor = color;
-        imageLinks[currentPage].color = color; // Save the new color to the current page
-      }
-
-      // Toggle play/pause when the play button is clicked
-      function togglePlay() {
-        if (isPlaying) {
-          audio.pause();
-          isPlaying = false;
-          document.getElementById("playButton").textContent = "▶ Play";
-          document.getElementById("pageDisplay").classList.remove("playing");
-        } else {
-          // Play the audio specific to the current page
-          audio.src = activeSong;
-          audio.play();
-          isPlaying = true;
-          document.getElementById("playButton").textContent = "⏸ Pause";
-          document.getElementById("pageDisplay").classList.add("playing");
-        }
-      }
-
-      // Adjust the audio based on the song path (relative path in the same folder)
-      audio.src = ''; // No default song
-    </script>
   </div>
+
+  <!-- External Script for Functionality -->
+  <script>
+    let currentPage = 1;
+    let isPlaying = false;
+    let audio = new Audio(); // No default song yet
+    let activeSong = '';
+    let activeImage = '';
+    const imageLinks = {
+      1: { image: "images/test1.jpg", song: "songs/song1.mp3", songName: "Song 1", color: "#333" },
+      2: { image: "images/test2.jpg", song: "songs/song2.mp3", songName: "Song 2", color: "#444" },
+      3: { image: "images/test3.jpg", song: "songs/song3.mp3", songName: "Song 3", color: "#555" },
+    };
+
+    // Open the scrapbook modal
+    function openScrapbook() {
+      document.getElementById("scrapbookPage").style.display = "block";
+      loadImage();
+    }
+
+    // Close the scrapbook
+    function closeScrapbook() {
+      window.location.href = 'index.html'; // Redirect to the home page
+      audio.pause(); // Pause the audio when closing the scrapbook
+      isPlaying = false;
+    }
+
+    // Load the image, song, and song name
+    function loadImage() {
+      const pageDisplay = document.getElementById("pageDisplay");
+      const pageNumber = document.getElementById("pageNumber");
+      const songNameDisplay = document.getElementById("songName");
+      const currentData = imageLinks[currentPage];
+
+      if (currentData) {
+        // Set image and song
+        activeImage = currentData.image;
+        activeSong = currentData.song;
+        const currentColor = currentData.color;
+        const songName = currentData.songName;
+
+        pageDisplay.innerHTML = `<img src="${activeImage}" alt="Scrapbook Image" />`;
+        pageDisplay.style.backgroundColor = currentColor; // Set background color for the image box
+        songNameDisplay.textContent = songName; // Display the song name
+        togglePlayButton(true);
+        
+        // Set color picker to the page's color
+        document.getElementById('colorPicker').value = currentColor;
+      } else {
+        pageDisplay.innerHTML = `<span id="placeholder" style="color: #888;">No image uploaded yet.</span>`;
+      }
+
+      pageNumber.textContent = `Page ${currentPage}`;
+    }
+
+    // Show or hide the play button
+    function togglePlayButton(show) {
+      const playButton = document.getElementById("playButton");
+      if (show) {
+        playButton.style.display = "block";
+      } else {
+        playButton.style.display = "none";
+      }
+    }
+
+    // Go to the next page
+    function nextPage() {
+      currentPage++;
+      if (!imageLinks[currentPage]) currentPage = 1; // Loop back to first page
+      loadImage();
+    }
+
+    // Go to the previous page
+    function prevPage() {
+      currentPage--;
+      if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to last page
+      loadImage();
+    }
+
+    // Change the color of the song box
+    function changeSongBoxColor(color) {
+      const songBox = document.getElementById("songBox");
+      songBox.style.backgroundColor = color;
+      imageLinks[currentPage].color = color; // Save the new color to the current page
+    }
+
+    // Toggle play/pause when the play button is clicked
+    function togglePlay() {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        document.getElementById("playButton").textContent = "▶ Play";
+      } else {
+        // Play the audio specific to the current page
+        audio.src = activeSong;
+        audio.play();
+        isPlaying = true;
+        document.getElementById("playButton").textContent = "⏸ Pause";
+      }
+    }
+  </script>
 </body>
 </html>
