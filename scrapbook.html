@@ -12,6 +12,7 @@
       background: #0d0d0d;
       color: #fff;
       text-align: center;
+      overflow-x: hidden; /* Prevent horizontal overflow */
     }
 
     h1 {
@@ -19,152 +20,184 @@
       margin-bottom: 20px;
     }
 
-    .page-container {
+    /* Scrapbook Modal Styles */
+    #scrapbookModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      overflow: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #scrapbookModal > div {
+      max-width: 90%; /* Set maximum width to 90% of screen size */
+      margin: auto;
       background: #1a1a1a;
-      width: 90%;
-      max-width: 640px;
-      height: 60vh;
-      margin: 0 auto 20px;
+      padding: 20px;
+      border-radius: 16px;
+    }
+
+    /* Page display styling */
+    #pageDisplay {
+      background: #000;
       border: 3px dashed #ffb6c1;
       border-radius: 12px;
+      width: 100%;
+      height: auto; /* Allow height to adjust based on content */
+      max-height: 480px;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       overflow: hidden;
       position: relative;
     }
 
-    .page-container img {
-      max-width: 100%;
-      max-height: 100%;
+    #pageDisplay img {
+      max-width: 100%; /* Make sure image doesn't overflow horizontally */
+      max-height: 100%; /* Ensure image stays within the container's bounds */
+      object-fit: contain; /* Maintain image aspect ratio */
     }
 
+    /* Controls styling */
     .controls {
       margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    button {
-      margin: 5px;
-      padding: 10px 16px;
+    .controls button {
+      background-color: #ff69b4;
+      color: black;
+      padding: 10px 15px;
+      border: none;
       border-radius: 8px;
-      border: 1px solid #ffb6c1;
-      background: #1a1a1a;
-      color: #ffb6c1;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #2a2a2a;
+    .controls button:hover {
+      background-color: #ff1493;
     }
 
-    #login-btn {
-      background: #ff69b4;
-      color: #0d0d0d;
-      border: none;
-    }
-
-    #pageNumber {
-      color: #ffb6c1;
-      font-size: 18px;
-      margin: 0 15px;
-    }
-
-    /* Responsive styles */
-    @media (max-width: 600px) {
-      .page-container {
-        width: 100%;
-        height: 50vh;
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      #scrapbookModal > div {
+        max-width: 95%; /* Make modal slightly smaller on smaller screens */
+        padding: 15px;
       }
 
-      h1 {
-        font-size: 24px;
+      #pageDisplay {
+        max-height: 70vh; /* Limit height to 70% of the viewport height on small screens */
       }
 
-      button {
-        padding: 8px 12px;
-        font-size: 14px;
-      }
-
-      #pageNumber {
-        font-size: 16px;
-      }
-
-      #login-btn {
-        font-size: 14px;
+      .controls button {
+        padding: 8px 12px; /* Smaller buttons on mobile */
       }
     }
 
-    @media (max-width: 375px) {
-      h1 {
-        font-size: 22px;
-      }
-
-      button {
-        padding: 6px 10px;
-        font-size: 12px;
-      }
-
-      #pageNumber {
-        font-size: 14px;
-      }
-
-      .page-container {
-        height: 45vh;
-      }
-    }
   </style>
 </head>
 <body>
-  <h1>📖 Scrapbook</h1>
-  
-  <div class="controls">
-    <button onclick="prevPage()">⬅ Prev</button>
-    <span id="pageNumber">Page 1</span>
-    <button onclick="nextPage()">Next ➡</button>
-    <button id="login-btn">Login with Google</button>
+  <!-- Button to open scrapbook modal -->
+  <button class="back-btn" onclick="openScrapbook()">📖 View Scrapbook</button>
+
+  <!-- Scrapbook Modal (already contains the updated code) -->
+  <div id="scrapbookModal">
+    <div>
+      <h2 style="color: #ffb6c1;">📖 Scrapbook</h2>
+      
+      <div class="controls">
+        <button onclick="prevPage()">⬅ Prev</button>
+        <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
+        <button onclick="nextPage()">Next ➡</button>
+        <button onclick="closeScrapbook()">✕ Close</button>
+      </div>
+
+      <div id="pageDisplay">
+        <span id="placeholder" style="color: #888;">No image uploaded yet.</span>
+      </div>
+    </div>
   </div>
 
-  <div class="page-container" id="pageDisplay">
-    <span id="placeholder">No image uploaded yet.</span>
-  </div>
-
+  <!-- External Script for the Scrapbook Modal and Swipe Functionality -->
   <script>
     let currentPage = 1;
+    let touchStartX = 0;
+    let touchEndX = 0;
 
-    // Your GitHub image links (example below)
     const imageLinks = {
-      1: "images/test.jpg", // Replace with your real image path or raw GitHub link
-      2: "images/test2.jpg", // More images
+      1: "images/test.jpg", // Replace with real image URLs
+      2: null,
       3: null
     };
 
-    const pageDisplay = document.getElementById("pageDisplay");
-    const pageNumber = document.getElementById("pageNumber");
+    // Open the scrapbook modal
+    function openScrapbook() {
+      document.getElementById("scrapbookModal").style.display = "block";
+      loadImage();
+    }
 
+    // Close the scrapbook modal
+    function closeScrapbook() {
+      document.getElementById("scrapbookModal").style.display = "none";
+    }
+
+    // Load the image based on the current page
     function loadImage() {
+      const pageDisplay = document.getElementById("pageDisplay");
+      const pageNumber = document.getElementById("pageNumber");
       const imageUrl = imageLinks[currentPage];
       if (imageUrl) {
         pageDisplay.innerHTML = `<img src="${imageUrl}" alt="Scrapbook Page Image">`;
       } else {
-        pageDisplay.innerHTML = `<span id="placeholder">No image uploaded yet.</span>`;
+        pageDisplay.innerHTML = `<span id="placeholder" style="color: #888;">No image uploaded yet.</span>`;
       }
       pageNumber.textContent = `Page ${currentPage}`;
     }
 
+    // Go to the next page
     function nextPage() {
       currentPage++;
+      if (!imageLinks[currentPage]) currentPage = 1; // Loop back to first page
       loadImage();
     }
 
+    // Go to the previous page
     function prevPage() {
-      if (currentPage > 1) {
-        currentPage--;
-        loadImage();
+      currentPage--;
+      if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to last page
+      loadImage();
+    }
+
+    // Swipe gesture functionality
+    function handleTouchStart(event) {
+      touchStartX = event.touches[0].clientX;
+    }
+
+    function handleTouchEnd(event) {
+      touchEndX = event.changedTouches[0].clientX;
+      handleSwipeGesture();
+    }
+
+    function handleSwipeGesture() {
+      if (touchStartX - touchEndX > 100) {
+        // Left swipe: Go to the next page
+        nextPage();
+      } else if (touchEndX - touchStartX > 100) {
+        // Right swipe: Go to the previous page
+        prevPage();
       }
     }
 
-    // Initial load
-    loadImage();
+    // Add swipe event listeners to the page container
+    document.getElementById("pageDisplay").ontouchstart = handleTouchStart;
+    document.getElementById("pageDisplay").ontouchend = handleTouchEnd;
   </script>
 </body>
 </html>
