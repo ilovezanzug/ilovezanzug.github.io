@@ -1,4 +1,4 @@
-8
+9
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -525,7 +525,7 @@
     toggleChat.textContent = embeddedChat.style.display === "none" ? "💬 Open Chat" : "💬 Close Chat";
   });
 </script>
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -535,7 +535,7 @@
     body {
       font-family: 'Georgia', serif;
       margin: 0;
-      padding: 20px;
+      padding: 0;
       background: #0d0d0d;
       color: #fff;
       text-align: center;
@@ -546,31 +546,240 @@
       margin-bottom: 20px;
     }
 
-    .back-btn {
+    /* Scrapbook Modal Styles */
+    #scrapbookModal {
+      display: block;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 80%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      overflow: auto;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .controls button {
       background-color: #ff69b4;
       color: black;
-      padding: 15px 20px;
+      padding: 10px 20px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 18px;
+      margin: 0 5px;
     }
 
-    .back-btn:hover {
-      background-color: #ff1493;
+    .controls button:hover {
+      background-color: #ff3385;
+    }
+
+    /* Image Box Style */
+    #pageDisplay {
+      background: #333;
+      border: 3px dashed #ffb6c1;
+      border-radius: 12px;
+      width: 100%;
+      height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.5s ease;
+    }
+
+    #pageDisplay img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Play Button Overlay */
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .play-button:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    /* Animation for Playing Song */
+    .playing {
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Color Picker for Background */
+    .color-picker {
+      margin: 20px auto;
+      padding: 5px;
+      background: #444;
+      border: 1px solid #ffb6c1;
+      border-radius: 5px;
+    }
+
+    /* Song Name Style */
+    .song-name {
+      color: #ffb6c1;
+      font-size: 20px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <!-- Button to open scrapbook modal -->
-  <button class="back-btn" onclick="openScrapbook()">📖 View Scrapbook</button>
+  <h1>Scrapbook</h1>
 
-  <script>
-    // Function to open the scrapbook modal
-    function openScrapbook() {
-      window.location.href = "scrapbook.html"; // Redirects to scrapbook.html
-    }
-  </script>
+  <!-- Scrapbook Modal -->
+  <div id="scrapbookModal">
+    <div class="controls">
+      <button onclick="prevPage()">⬅ Prev</button>
+      <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
+      <button onclick="nextPage()">Next ➡</button>
+      <button onclick="closeScrapbook()" style="float: right; background: #ff69b4; color: black;">✕ Close</button>
+    </div>
+
+    <!-- Color Picker for Each Song -->
+    <input type="color" id="colorPicker" class="color-picker" onchange="changeImageBoxColor(this.value)" />
+
+    <!-- Image Box with Play Button -->
+    <div id="pageDisplay">
+      <span id="placeholder" style="color: #888;">No image uploaded yet.</span>
+      <div id="playButton" class="play-button" style="display: none;" onclick="togglePlay()">▶ Play</div>
+    </div>
+
+    <!-- Song Name -->
+    <div id="songName" class="song-name">Song 1</div>
+
+    <!-- External Script for Functionality -->
+    <script>
+      let currentPage = 1;
+      let isPlaying = false;
+      let audio = new Audio(); // No default song yet
+      let activeSong = '';
+      let activeImage = '';
+      const imageLinks = {
+        1: { image: "images/test1.jpg", song: "songs/song1.mp3", songName: "Song 1", color: "#333" },
+        2: { image: "images/test2.jpg", song: "songs/song2.mp3", songName: "Song 2", color: "#444" },
+        3: { image: "images/test3.jpg", song: "songs/song3.mp3", songName: "Song 3", color: "#555" },
+      };
+
+      // Open the scrapbook modal
+      function openScrapbook() {
+        document.getElementById("scrapbookModal").style.display = "block";
+        loadImage();
+      }
+
+      // Close the scrapbook modal
+      function closeScrapbook() {
+        document.getElementById("scrapbookModal").style.display = "none";
+        audio.pause(); // Pause the audio when closing the modal
+        isPlaying = false;
+      }
+
+      // Load the image, song, and song name
+      function loadImage() {
+        const pageDisplay = document.getElementById("pageDisplay");
+        const pageNumber = document.getElementById("pageNumber");
+        const songNameDisplay = document.getElementById("songName");
+        const currentData = imageLinks[currentPage];
+
+        if (currentData) {
+          // Set image and song
+          activeImage = currentData.image;
+          activeSong = currentData.song;
+          const currentColor = currentData.color;
+          const songName = currentData.songName;
+
+          pageDisplay.innerHTML = `<img src="${activeImage}" alt="Scrapbook Image" />`;
+          pageDisplay.style.backgroundColor = currentColor; // Set background color for the image box
+          songNameDisplay.textContent = songName; // Display the song name
+          togglePlayButton(true);
+          
+          // Set color picker to the page's color
+          document.getElementById('colorPicker').value = currentColor;
+        } else {
+          pageDisplay.innerHTML = `<span id="placeholder" style="color: #888;">No image uploaded yet.</span>`;
+        }
+
+        pageNumber.textContent = `Page ${currentPage}`;
+      }
+
+      // Show or hide the play button
+      function togglePlayButton(show) {
+        const playButton = document.getElementById("playButton");
+        if (show) {
+          playButton.style.display = "block";
+        } else {
+          playButton.style.display = "none";
+        }
+      }
+
+      // Go to the next page
+      function nextPage() {
+        currentPage++;
+        if (!imageLinks[currentPage]) currentPage = 1; // Loop back to first page
+        loadImage();
+      }
+
+      // Go to the previous page
+      function prevPage() {
+        currentPage--;
+        if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to last page
+        loadImage();
+      }
+
+      // Change the color of the image box
+      function changeImageBoxColor(color) {
+        const pageDisplay = document.getElementById("pageDisplay");
+        pageDisplay.style.backgroundColor = color;
+        imageLinks[currentPage].color = color; // Save the new color to the current page
+      }
+
+      // Toggle play/pause when the play button is clicked
+      function togglePlay() {
+        if (isPlaying) {
+          audio.pause();
+          isPlaying = false;
+          document.getElementById("playButton").textContent = "▶ Play";
+          document.getElementById("pageDisplay").classList.remove("playing");
+        } else {
+          // Play the audio specific to the current page
+          audio.src = activeSong;
+          audio.play();
+          isPlaying = true;
+          document.getElementById("playButton").textContent = "⏸ Pause";
+          document.getElementById("pageDisplay").classList.add("playing");
+        }
+      }
+
+      // Adjust the audio based on the song path (relative path in the same folder)
+      audio.src = ''; // No default song
+    </script>
+  </div>
 </body>
 </html>
 </script>
