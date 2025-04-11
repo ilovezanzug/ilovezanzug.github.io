@@ -2,533 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>To The Love Of My Life</title>
-  <style>
-    .chat-bubble {
-  background: #2a2a2a;
-  border-radius: 16px;
-  padding: 12px;
-  margin: 10px;
-  max-width: 75%;
-  color: #fff;
-  word-wrap: break-word;
-}
-
-.user-bubble {
-  background: #ffb7ce;
-  color: #0d0d0d;
-  margin-left: auto;
-}
-
-.other-bubble {
-  background: #333;
-  color: #ffb6c1;
-  margin-right: auto;
-}
-
-.bubble-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-.bubble-pic {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-    body {
-      font-family: 'Georgia', serif;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-      background: #0d0d0d;
-      color: #f5f5f5;
-      overflow-x: hidden;
-    }
-
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #ffb6c1;
-    }
-
-    #boxes {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      transition: opacity 0.5s ease;
-    }
-
-    .box {
-      background: #1a1a1a;
-      border-radius: 12px;
-      width: 80px;
-      height: 80px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      color: #ffb6c1;
-      border: 2px solid #ffb6c1;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    .box:active {
-      transform: scale(0.98);
-      background: #2a2a2a;
-    }
-
-    .fade-out {
-      opacity: 0;
-    }
-
-    .fade-in {
-      animation: fadeIn 1s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .quote-fullscreen {
-      font-size: 20px;
-      font-style: italic;
-      color: #ffc0cb;
-      max-width: 90%;
-      margin: 100px auto 20px;
-      padding: 0 20px;
-      animation: fadeIn 1s ease;
-    }
-
-    .back-btn {
-      padding: 12px 24px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #1a1a1a;
-      border: 1px solid #ffb6c1;
-      color: #ffb6c1;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-    }
-
-    .back-btn:hover {
-      background: #2a2a2a;
-    }
-
-    .music-player {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-
-    .song {
-      background: #1a1a1a;
-      border: 2px solid #ffb6c1;
-      border-radius: 12px;
-      padding: 12px;
-      width: 160px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .song:hover {
-      transform: scale(1.03);
-      background: #2a2a2a;
-    }
-
-    .song img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-
-    .song-title {
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: #ffc0cb;
-    }
-
-    .spotify-link {
-      font-size: 12px;
-      color: #ffb6c1;
-      text-decoration: underline;
-    }
-
-    #quoteView {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  <h1 id="pageTitle">To The Love Of My Life</h1>
-
-  <!-- Music Player -->
-  <div class="music-player">
-    <div class="song" onclick="playSong('music/dream-girl.mp3', 'I imagine us. you in my company and me being comfortable')">
-      <img src="images/dream-girl.jpg" alt="Dream Girl">
-      <div class="song-title">Dream Girl - CRISAUNT</div>
-      <a class="spotify-link" href="https://open.spotify.com/track/yourlink1" target="_blank">Play on Spotify</a>
-    </div>
-    <div class="song" onclick="playSong('music/hey-lover.mp3', 'This song reminds me of all our goofy and silly meet-ups, I love to reminisce us with this song')">
-      <img src="images/hey-lover.jpg" alt="Hey Lover">
-      <div class="song-title">Hey Lover - The Daughter of Eve</div>
-      <a class="spotify-link" href="https://open.spotify.com/track/yourlink2" target="_blank">Play on Spotify</a>
-    </div>
-    <div class="song" onclick="playSong('music/la-seine-and-i.mp3', 'Heh... some more Elisha stalker lore... I used to imagine us dancing to this song for some reason... spare me')">
-      <img src="images/la-seine.jpg" alt="La Seine and I">
-      <div class="song-title">La Seine and I (English)</div>
-      <a class="spotify-link" href="https://open.spotify.com/track/yourlink3" target="_blank">Play on Spotify</a>
-    </div>
-    <div class="song" onclick="playSong('music/my-kind-of-girl.mp3', 'This song has been with me since I began liking you till now, reminds me of how my love for you progressed and deepened over time.')">
-      <img src="images/mac-demarco.jpg" alt="My Kind of Girl">
-      <div class="song-title">My Kind of Girl - Mac DeMarco</div>
-      <a class="spotify-link" href="https://open.spotify.com/track/yourlink4" target="_blank">Play on Spotify</a>
-    </div>
-    <div class="song" onclick="playSong('music/without-you.mp3', 'This song reminds me of how ethereal you are, perfect in creation my love.')">
-      <img src="images/without-you.jpg" alt="Without You">
-      <div class="song-title">Without You - Strawberry Guy</div>
-      <a class="spotify-link" href="https://open.spotify.com/track/yourlink5" target="_blank">Play on Spotify</a>
-    </div>
-  </div>
-
-  <audio id="backgroundAudio" loop></audio>
-
-  <!-- Quote Boxes -->
-  <div id="boxes"></div>
-
-  <!-- Quote View Section -->
-  <div id="quoteView">
-    <div id="quoteText" class="quote-fullscreen fade-in"></div>
-    <button class="back-btn fade-in" onclick="goBack()">← Back</button>
-  </div>
-
-  <script>
-    const introText = "HEJKAAAA MY GFFFFF, this is a site I made (def not with the help of chat gpt..) with things I love about you. I'll keep updating it with more lovey dovey quotes and surprises. I love you so much, and this is just a silly way to express that baby ❤️";
-
-    const quotes = [
-      "I love the little smile after you say something silly",
-      "I love your openness and honesty",
-      "I love your enthusiasm talking about anything",
-      "I love the way you stare at me with your eyes",
-      "I love your patience with me and my flaws",
-      "I love when you do goofy stuff with your silly tone",
-      "I love the way you curl up your lips in anticipation of what I’m going to say",
-      "I love the way you adore animals",
-      "I love the way you puff up your cheeks when humming to yourself",
-      "I love how I never regretted messaging you for the first time",
-      "Your beauty is irreplaceable, you're gorgeous",
-      "I love the fact my life has been better with you in it",
-      "I love how I’m certain that I want to spend the rest of my days with you",
-      "I love the fact that no matter the mood, I always think of you",
-      "I love how I think of you in my every prayer",
-      "I love the way you squeeze my hand when we’re holding each other's",
-      "I love how all my favourite thoughts include you",
-      "I love how you value me even with my every fault",
-      "I love how you want to talk to me, it makes me feel special",
-      "I love the way you get overly shy when attempting romantic gestures",
-      "I love the silly role-play we do together",
-      "Days we speak less, the more I begin to appreciate you",
-      "I love everything there is to your face (especially that forehead dent.)",
-      "I love the way you make the most silly comparisons",
-      "I love how I have someone I can love more and more each day",
-      "I live life wanting to know everything from your thoughts and feelings to what you hate and love",
-      "I live life wanting to experience the rest with you",
-      "The greatest gift you’ve given me is your heart",
-      "I want to be there for all your highs and comfort you at every low",
-      "Every day is faced with an insatiable desire to make you happy",
-      "I love the way you play with my hands and face",
-      "I love the way you hold onto my arm I feel complete",
-      "If I had to relive life a thousand times more, I’d want it to be with you each time, pinky promise",
-      "I love the way you get excited just thinking about seeing me",
-      "I love the way I feel my affection for you deepen whenever I look at you daydreaming",
-      "I love how you’ve made my heart feel complete, I couldn’t pray for better",
-      "I love how you squeal about stuff you're excited for",
-      "I love how we can talk about anything about each other, my lover and best friend",
-      "I love how when we are together I feel so comfortable",
-      "I love how my eyes prick with tears whenever I remember how grateful I am for you",
-      "I wouldn’t want to spend a lifetime away from you, my darling",
-      "I love your silly sarcasm and princess behaviour"
-    ];
-
-    const boxContainer = document.getElementById("boxes");
-    const quoteView = document.getElementById("quoteView");
-    const quoteText = document.getElementById("quoteText");
-
-    // Intro box
-    const introBox = document.createElement("div");
-    introBox.className = "box";
-    introBox.textContent = "Intro";
-    introBox.onclick = () => showQuote(introText);
-    boxContainer.appendChild(introBox);
-
-    // Quote boxes
-    quotes.forEach((quote, index) => {
-      const box = document.createElement("div");
-      box.className = "box";
-      box.textContent = index + 1;
-      box.onclick = () => showQuote(quote);
-      boxContainer.appendChild(box);
-    });
-
-    // Function to show quote
-    function showQuote(quote) {
-      document.getElementById("boxes").style.display = "none";
-      document.querySelector(".music-player").style.display = "none";
-      document.getElementById("pageTitle").style.display = "none";
-      quoteText.innerText = quote;
-      quoteView.style.display = "block";
-    }
-
-    function goBack() {
-      quoteView.style.display = "none";
-      document.getElementById("boxes").style.display = "flex";
-      document.querySelector(".music-player").style.display = "flex";
-      document.getElementById("pageTitle").style.display = "block";
-    }
-
-    function playSong(songPath, quote) {
-      const audio = document.getElementById("backgroundAudio");
-      audio.src = songPath;
-      audio.play();
-      showQuote(quote);
-    }
-  </script>
-  <button class="back-btn" onclick="openScrapbook()">📖 View Scrapbook</button>
-  <!-- Chat Toggle Button -->
-<button id="toggle-chat" class="back-btn" style="margin-top: 40px;">💬 Open Chat</button>
-
-<!-- Embedded Chatbox -->
-<div id="embedded-chatbox" style="display: none; margin-top: 20px;">
-  <div id="chat-container" style="display: none;">
-    <div id="chat-messages"></div>
-    <input type="text" id="chat-input" placeholder="Type a message...">
-    <button id="send-btn">Send</button>
-    <p id="typing-status"></p>
-  </div>
-  <button id="login-btn" class="back-btn">Login with Google to Chat</button>
-</div>
-
-<!-- Chat Styles -->
-<style>
-  #chat-container {
-    border: 2px solid #ff69b4;
-    border-radius: 12px;
-    padding: 16px;
-    max-width: 500px;
-    margin: 0 auto;
-    background: #1a1a1a;
-    text-align: left;
-  }
-
-  #chat-messages {
-    height: 250px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 8px;
-    background: #0d0d0d;
-  }
-
-  #chat-input {
-    width: 65%;
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #ff69b4;
-    background: #2a2a2a;
-    color: #fff;
-  }
-
-  #send-btn {
-    padding: 8px 12px;
-    background: #ff69b4;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  #typing-status {
-    font-size: 14px;
-    opacity: 0.6;
-  }
-</style>
-
-<!-- Firebase Chat Logic -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-  import { getDatabase, ref, push, onChildAdded, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-  import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyC9FlIiG_8gDHAH-5SnmmnL_vAJTMSySIo",
-    authDomain: "chat-e7c75.firebaseapp.com",
-    databaseURL: "https://chat-e7c75-default-rtdb.firebaseio.com",
-    projectId: "chat-e7c75",
-    storageBucket: "chat-e7c75.appspot.com",
-    messagingSenderId: "340780127879",
-    appId: "1:340780127879:web:5f18ff2fb8d8f12af7ca22",
-    measurementId: "G-TWS5HLPZDE"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const database = getDatabase(app);
-  const storage = getStorage(app);
-  const analytics = getAnalytics(app);
-
-  const loginBtn = document.getElementById("login-btn");
-  const chatContainer = document.getElementById("chat-container");
-  const chatMessages = document.getElementById("chat-messages");
-  const chatInput = document.getElementById("chat-input");
-  const sendBtn = document.getElementById("send-btn");
-  const typingStatus = document.getElementById("typing-status");
-  const profileSection = document.getElementById("profile-section");
-  const nameInput = document.getElementById("custom-name");
-  const picInput = document.getElementById("profile-pic-upload");
-
-  let currentUser = null;
-  let currentProfile = { name: "", picUrl: "" };
-
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      currentUser = user;
-      loginBtn.style.display = "none";
-      chatContainer.style.display = "block";
-      profileSection.style.display = "block";
-
-      // Load profile info
-      get(ref(database, "profiles/" + user.uid)).then(snapshot => {
-        const data = snapshot.val();
-        if (data) {
-          currentProfile = data;
-          nameInput.value = data.name || "";
-        }
-      });
-    }
-  });
-
-  loginBtn.onclick = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
-  };
-  onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, show chat container
-    loginBtn.style.display = "none";
-    chatContainer.style.display = "block";
-  } else {
-    // Not signed in, keep the login button
-    loginBtn.style.display = "block";
-    chatContainer.style.display = "none";
-  }
-});
-  sendBtn.onclick = () => {
-    const msg = chatInput.value.trim();
-    if (msg && currentUser) {
-      const now = new Date();
-      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      push(ref(database, "messages"), {
-        uid: currentUser.uid,
-        name: currentProfile.name || currentUser.displayName,
-        pic: currentProfile.picUrl || currentUser.photoURL || "",
-        text: msg,
-        timestamp: time
-      });
-      chatInput.value = "";
-    }
-  };
-
-  function saveProfile() {
-    const name = nameInput.value.trim();
-    const file = picInput.files[0];
-
-    if (file) {
-      const fileRef = storageRef(storage, "profile-pics/" + currentUser.uid);
-      uploadBytes(fileRef, file).then(() => {
-        return getDownloadURL(fileRef);
-      }).then(url => {
-        currentProfile = { name, picUrl: url };
-        set(ref(database, "profiles/" + currentUser.uid), currentProfile);
-      });
-    } else {
-      currentProfile.name = name;
-      set(ref(database, "profiles/" + currentUser.uid), currentProfile);
-    }
-  }
-  onChildAdded(ref(database, "messages"), snapshot => {
-  const msg = snapshot.val();
-  const bubble = document.createElement("div");
-  bubble.className = msg.uid === (currentUser?.uid) ? "chat-bubble user-bubble" : "chat-bubble other-bubble";
-  bubble.innerHTML = `
-    <div class="bubble-header">
-      ${msg.pic ? `<img src="${msg.pic}" class="bubble-pic" />` : ""}
-      <strong>${msg.name}</strong> <small>[${msg.timestamp}]</small>
-    </div>
-    <div class="bubble-text">${msg.text}</div>
-  `;
-  chatMessages.appendChild(bubble);
-
-  // Automatically scroll to the bottom of the chat container
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-});
-  chatInput.addEventListener("input", () => {
-    if (currentUser) {
-      set(ref(database, "typing/" + currentUser.uid), {
-        name: currentProfile.name || currentUser.displayName,
-        typing: chatInput.value.length > 0
-      });
-      setTimeout(() => {
-        set(ref(database, "typing/" + currentUser.uid), { typing: false });
-      }, 3000);
-    }
-  });
-
-  onValue(ref(database, "typing"), snapshot => {
-    let typingName = "";
-    let isTyping = false;
-    snapshot.forEach(child => {
-      const val = child.val();
-      if (val.typing) {
-        isTyping = true;
-        typingName = val.name;
-      }
-    });
-    typingStatus.textContent = isTyping ? `${typingName} is typing...` : "";
-  });
-
-  // Toggle Chat UI
-  const toggleChat = document.getElementById("toggle-chat");
-  const embeddedChat = document.getElementById("embedded-chatbox");
-
- toggleChat.addEventListener("click", () => {
-    embeddedChat.style.display = embeddedChat.style.display === "none" ? "block" : "none";
-    toggleChat.textContent = embeddedChat.style.display === "none" ? "💬 Open Chat" : "💬 Close Chat";
-  });
-</script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Scrapbook</title>
   <style>
@@ -546,107 +19,108 @@
       margin-bottom: 20px;
     }
 
-    /* Add your other styles here */
+    .page-container {
+      background: #1a1a1a;
+      width: 90%;
+      max-width: 640px;
+      height: 480px;
+      margin: 0 auto 20px;
+      border: 3px dashed #ffb6c1;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .page-container img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #ffb6c1;
+      background: #1a1a1a;
+      color: #ffb6c1;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2a2a2a;
+    }
+
+    #login-btn {
+      background: #ff69b4;
+      color: #0d0d0d;
+      border: none;
+    }
+
+    #pageNumber {
+      color: #ffb6c1;
+      font-size: 18px;
+      margin: 0 15px;
+    }
   </style>
 </head>
 <body>
-  <!-- Scrapbook Modal (already contains the updated code) -->
-  <div id="scrapbookModal" style="display: none; position: fixed; top: 0; left: 0; 
-    width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow: auto; padding: 20px;">
-    <div style="max-width: 700px; margin: auto; background: #1a1a1a; padding: 20px; border-radius: 16px;">
-      <h2 style="color: #ffb6c1;">📖 Scrapbook</h2>
-      
-      <div class="controls" style="margin-bottom: 20px;">
-        <button onclick="prevPage()">⬅ Prev</button>
-        <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
-        <button onclick="nextPage()">Next ➡</button>
-        <button onclick="closeScrapbook()" style="float: right; background: #ff69b4; color: black;">✕ Close</button>
-      </div>
-
-      <div id="pageDisplay" style="background: #000; border: 3px dashed #ffb6c1; 
-        border-radius: 12px; width: 100%; height: 480px; display: flex; 
-        align-items: center; justify-content: center; overflow: hidden;">
-        <span id="placeholder" style="color: #888;">No image uploaded yet.</span>
-      </div>
-    </div>
+  <h1>📖 Scrapbook</h1>
+  
+  <div class="controls">
+    <button onclick="prevPage()">⬅ Prev</button>
+    <span id="pageNumber">Page 1</span>
+    <button onclick="nextPage()">Next ➡</button>
+    <button id="login-btn">Login with Google</button>
   </div>
 
-  <!-- External Script for the Scrapbook Modal and Swipe Functionality -->
+  <div class="page-container" id="pageDisplay">
+    <span id="placeholder">No image uploaded yet.</span>
+  </div>
+
   <script>
     let currentPage = 1;
-    let touchStartX = 0;
-    let touchEndX = 0;
 
+    // Your GitHub image links (example below)
     const imageLinks = {
-      1: "images/test.jpg", // Replace with real image URLs
-      2: null,
+      1: "images/test.jpg", // Replace with your real image path or raw GitHub link
+      2: "images/test2.jpg", // More images
       3: null
     };
 
-    // Open the scrapbook modal
-    function openScrapbook() {
-      document.getElementById("scrapbookModal").style.display = "block";
-      loadImage();
-    }
+    const pageDisplay = document.getElementById("pageDisplay");
+    const pageNumber = document.getElementById("pageNumber");
 
-    // Close the scrapbook modal
-    function closeScrapbook() {
-      document.getElementById("scrapbookModal").style.display = "none";
-    }
-
-    // Load the image based on the current page
     function loadImage() {
-      const pageDisplay = document.getElementById("pageDisplay");
-      const pageNumber = document.getElementById("pageNumber");
       const imageUrl = imageLinks[currentPage];
       if (imageUrl) {
         pageDisplay.innerHTML = `<img src="${imageUrl}" alt="Scrapbook Page Image">`;
       } else {
-        pageDisplay.innerHTML = `<span id="placeholder" style="color: #888;">No image uploaded yet.</span>`;
+        pageDisplay.innerHTML = `<span id="placeholder">No image uploaded yet.</span>`;
       }
       pageNumber.textContent = `Page ${currentPage}`;
     }
 
-    // Go to the next page
     function nextPage() {
       currentPage++;
-      if (!imageLinks[currentPage]) currentPage = 1; // Loop back to first page
       loadImage();
     }
 
-    // Go to the previous page
     function prevPage() {
-      currentPage--;
-      if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to last page
-      loadImage();
-    }
-
-    // Swipe gesture functionality
-    function handleTouchStart(event) {
-      touchStartX = event.touches[0].clientX;
-    }
-
-    function handleTouchEnd(event) {
-      touchEndX = event.changedTouches[0].clientX;
-      handleSwipeGesture();
-    }
-
-    function handleSwipeGesture() {
-      if (touchStartX - touchEndX > 100) {
-        // Left swipe: Go to the next page
-        nextPage();
-      } else if (touchEndX - touchStartX > 100) {
-        // Right swipe: Go to the previous page
-        prevPage();
+      if (currentPage > 1) {
+        currentPage--;
+        loadImage();
       }
     }
 
-    // Add swipe event listeners to the page container
-    document.getElementById("pageDisplay").ontouchstart = handleTouchStart;
-    document.getElementById("pageDisplay").ontouchend = handleTouchEnd;
+    // Initial load
+    loadImage();
   </script>
-</body>
-</html>
-</script>
 </body>
 </html>
