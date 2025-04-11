@@ -15,18 +15,17 @@
     }
 
     .polaroid-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      max-width: 375px;
+      position: relative;
+      width: 280px;
       aspect-ratio: 3 / 4;
       margin: 40px auto 12px;
       background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 4px 8px 18px rgba(0, 0, 0, 0.5);
+      padding: 10px 10px 30px;
       box-sizing: border-box;
+      transform: rotate(var(--tilt));
+      transition: transform 0.3s ease;
     }
 
     .polaroid-wrapper img {
@@ -37,10 +36,10 @@
     }
 
     .caption {
-      font-family: 'Courier New', monospace;
-      font-size: 0.8rem;
-      color: #555;
-      margin-top: 8px;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: #444;
+      margin-top: 12px;
     }
 
     #pageNumber {
@@ -102,6 +101,8 @@
       50% { box-shadow: 0 0 20px rgba(255, 182, 193, 0.9); }
       100% { box-shadow: 0 0 10px rgba(255, 182, 193, 0.4); }
     }
+
+    @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
   </style>
 </head>
 <body>
@@ -113,8 +114,8 @@
     <button class="play-btn" onclick="togglePlay()">▶</button>
   </div>
 
-  <!-- Scrapbook Page with Polaroid Style -->
-  <div class="polaroid-wrapper" id="pageDisplay">
+  <!-- Scrapbook Page with Polaroid Tilt -->
+  <div class="polaroid-wrapper" id="pageDisplay" style="--tilt: 0deg;">
     <span style="color:#888;">No image uploaded yet.</span>
   </div>
 
@@ -134,7 +135,8 @@
         songName: "Test Song",
         color: "#ffb6c1",
         songImage: "images/song.jpg",
-        caption: "March 2025 ✨"
+        caption: "March 2025 ✨",
+        tilt: "-2deg"
       },
       2: {
         image: "images/photo2.jpg",
@@ -142,7 +144,8 @@
         songName: "Another Tune",
         color: "#add8e6",
         songImage: "images/song2.jpg",
-        caption: "A special memory 💌"
+        caption: "A lovely memory 💖",
+        tilt: "2.5deg"
       }
     };
 
@@ -160,8 +163,10 @@
           <img src="${page.image}" alt="Page ${currentPage}">
           <div class="caption">${page.caption || ''}</div>
         `;
+        pageDisplay.style.setProperty('--tilt', page.tilt || '0deg');
       } else {
         pageDisplay.innerHTML = `<span style="color:#888;">No image uploaded yet.</span>`;
+        pageDisplay.style.setProperty('--tilt', '0deg');
       }
 
       pageNumber.textContent = `Page ${currentPage}`;
