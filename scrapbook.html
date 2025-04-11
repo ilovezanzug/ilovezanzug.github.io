@@ -14,35 +14,43 @@
       text-align: center;
     }
 
-    .page-container {
-      background: #1a1a1a;
-      width: 100%;
+    .polaroid-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       max-width: 375px;
       aspect-ratio: 3 / 4;
-      margin: 40px auto 16px;
-      border: 3px dashed #ffb6c1;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
+      margin: 40px auto 12px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+      padding: 10px;
+      box-sizing: border-box;
     }
 
-    .page-container img {
-      max-width: 100%;
-      max-height: 100%;
+    .polaroid-wrapper img {
+      width: 100%;
+      height: auto;
       object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .caption {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: #555;
+      margin-top: 8px;
     }
 
     #pageNumber {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #ffb6c1;
       background: #1a1a1a;
       padding: 4px 12px;
       border-radius: 999px;
       display: inline-block;
-      margin: 24px auto 0;
+      margin: 20px auto 0;
       box-shadow: 0 0 6px rgba(255, 182, 193, 0.3);
     }
 
@@ -50,7 +58,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      background-color: #ffb6c1; /* customizable per page */
+      background-color: #ffb6c1;
       border-radius: 999px;
       padding: 8px 12px;
       margin: 16px auto;
@@ -63,10 +71,6 @@
     .song-box.paused {
       animation: none;
       opacity: 0.85;
-    }
-
-    .song-box:hover {
-      box-shadow: 0 0 18px rgba(255, 182, 193, 0.7);
     }
 
     .song-art {
@@ -109,8 +113,8 @@
     <button class="play-btn" onclick="togglePlay()">▶</button>
   </div>
 
-  <!-- Scrapbook Page -->
-  <div class="page-container" id="pageDisplay">
+  <!-- Scrapbook Page with Polaroid Style -->
+  <div class="polaroid-wrapper" id="pageDisplay">
     <span style="color:#888;">No image uploaded yet.</span>
   </div>
 
@@ -129,14 +133,16 @@
         song: "songs/test.mp3",
         songName: "Test Song",
         color: "#ffb6c1",
-        songImage: "images/song.jpg"
+        songImage: "images/song.jpg",
+        caption: "March 2025 ✨"
       },
       2: {
-        image: null,
-        song: null,
-        songName: "",
+        image: "images/photo2.jpg",
+        song: "songs/another.mp3",
+        songName: "Another Tune",
         color: "#add8e6",
-        songImage: "images/song2.jpg"
+        songImage: "images/song2.jpg",
+        caption: "A special memory 💌"
       }
     };
 
@@ -150,14 +156,17 @@
     function loadImage() {
       const page = imageLinks[currentPage];
       if (page && page.image) {
-        pageDisplay.innerHTML = `<img src="${page.image}" alt="Page ${currentPage}">`;
+        pageDisplay.innerHTML = `
+          <img src="${page.image}" alt="Page ${currentPage}">
+          <div class="caption">${page.caption || ''}</div>
+        `;
       } else {
         pageDisplay.innerHTML = `<span style="color:#888;">No image uploaded yet.</span>`;
       }
 
       pageNumber.textContent = `Page ${currentPage}`;
 
-      // Update song box
+      // Song player updates
       if (page.song) {
         songPlayer.src = page.song;
         songName.textContent = page.songName;
@@ -184,26 +193,24 @@
       }
     }
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight") {
-        changePage(1);
-      } else if (e.key === "ArrowLeft") {
-        changePage(-1);
-      }
-    });
-
-    function changePage(direction) {
-      const totalPages = Object.keys(imageLinks).length;
-      currentPage += direction;
-      if (currentPage > totalPages) currentPage = 1;
-      if (currentPage < 1) currentPage = totalPages;
+    function changePage(dir) {
+      const total = Object.keys(imageLinks).length;
+      currentPage += dir;
+      if (currentPage > total) currentPage = 1;
+      if (currentPage < 1) currentPage = total;
       songPlayer.pause();
       isPlaying = false;
       songBox.classList.add("paused");
       loadImage();
     }
 
-    // Swipe support
+    // Arrow key navigation
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") changePage(1);
+      if (e.key === "ArrowLeft") changePage(-1);
+    });
+
+    // Swipe navigation
     let touchStartX = 0;
     document.addEventListener("touchstart", (e) => {
       touchStartX = e.touches[0].clientX;
