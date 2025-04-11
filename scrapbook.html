@@ -36,7 +36,7 @@
     }
 
     #scrapbookModal > div {
-      max-width: 90%; /* Set maximum width to 90% of screen size */
+      max-width: 90%; /* Modal takes 90% of the screen width */
       margin: auto;
       background: #1a1a1a;
       padding: 20px;
@@ -50,7 +50,7 @@
       border-radius: 12px;
       width: 100%;
       height: auto; /* Allow height to adjust based on content */
-      max-height: 480px;
+      max-height: 70vh; /* Limit height to 70% of the viewport height */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -59,9 +59,9 @@
     }
 
     #pageDisplay img {
-      max-width: 100%; /* Make sure image doesn't overflow horizontally */
-      max-height: 100%; /* Ensure image stays within the container's bounds */
-      object-fit: contain; /* Maintain image aspect ratio */
+      max-width: 100%; /* Prevent horizontal overflow */
+      max-height: 100%; /* Prevent image from overflowing vertically */
+      object-fit: contain; /* Maintain aspect ratio */
     }
 
     /* Controls styling */
@@ -93,7 +93,7 @@
       }
 
       #pageDisplay {
-        max-height: 70vh; /* Limit height to 70% of the viewport height on small screens */
+        max-height: 60vh; /* Reduce the max height on mobile for better fit */
       }
 
       .controls button {
