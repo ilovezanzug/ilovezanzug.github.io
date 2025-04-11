@@ -12,15 +12,14 @@
       background: #0d0d0d;
       color: #fff;
       text-align: center;
-    }
-
-    h1 {
-      color: #ffb6c1;
-      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     .controls {
-      margin: 20px 0;
+      margin-top: auto;
+      padding: 20px 0;
     }
 
     .controls button {
@@ -43,7 +42,7 @@
       width: 100%;
       max-width: 400px;
       aspect-ratio: 3 / 4;
-      margin: 0 auto 20px;
+      margin: 20px auto;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -65,7 +64,7 @@
       width: 50%;
       min-width: 180px;
       max-width: 200px;
-      margin: 10px auto 30px;
+      margin: 10px auto 0;
       color: white;
       transition: background-color 0.3s ease;
     }
@@ -98,7 +97,6 @@
   </style>
 </head>
 <body>
-  <h1>📖 Scrapbook</h1>
 
   <!-- Song player -->
   <div id="songBox" class="song-box">
@@ -110,16 +108,16 @@
     <audio id="audioPlayer" src=""></audio>
   </div>
 
-  <!-- Controls -->
+  <!-- Page Image Display -->
+  <div id="pageDisplay">
+    <span id="placeholder">No image uploaded yet.</span>
+  </div>
+
+  <!-- Controls at the bottom -->
   <div class="controls">
     <button onclick="prevPage()">⬅ Prev</button>
     <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
     <button onclick="nextPage()">Next ➡</button>
-  </div>
-
-  <!-- Page Image Display -->
-  <div id="pageDisplay">
-    <span id="placeholder">No image uploaded yet.</span>
   </div>
 
   <script>
