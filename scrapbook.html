@@ -8,227 +8,262 @@
     body {
       font-family: 'Georgia', serif;
       margin: 0;
-      padding: 20px;
+      padding: 0;
       background: #0d0d0d;
       color: #fff;
       text-align: center;
     }
 
-    .polaroid-wrapper {
-      position: relative;
-      width: 280px;
-      aspect-ratio: 3 / 4;
-      margin: 40px auto 12px;
-      background: #fff;
-      border-radius: 6px;
-      box-shadow: 4px 8px 18px rgba(0, 0, 0, 0.5);
-      padding: 10px 10px 30px;
-      box-sizing: border-box;
-      transform: rotate(var(--tilt));
-      transition: transform 0.3s ease;
+    h1 {
+      color: #ffb6c1;
+      margin-bottom: 20px;
     }
 
-    .polaroid-wrapper img {
+    /* Scrapbook Modal Container */
+    #scrapbookModal {
+      display: block;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 80%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      overflow: auto;
+      padding: 20px;
+      border-radius: 16px;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .controls button {
+      background-color: #ff69b4;
+      color: black;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .controls button:hover {
+      background-color: #ff1493;
+    }
+
+    /* Polaroid-style Image Display */
+    #pageDisplay {
+      background: #fff;
+      border: 3px solid #ffb6c1;
+      border-radius: 16px;
       width: 100%;
       height: auto;
-      object-fit: cover;
-      border-radius: 4px;
+      max-width: 400px;
+      max-height: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      position: relative;
+      transform: rotate(-3deg);
+      overflow: hidden;
     }
 
-    .caption {
-      font-family: 'Caveat', cursive;
-      font-size: 1rem;
-      color: #444;
-      margin-top: 12px;
+    #pageDisplay img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transform: rotate(3deg); /* Slight tilt to mimic Polaroid style */
     }
 
-    #pageNumber {
-      font-size: 0.9rem;
-      color: #ffb6c1;
-      background: #1a1a1a;
-      padding: 4px 12px;
-      border-radius: 999px;
-      display: inline-block;
-      margin: 20px auto 0;
-      box-shadow: 0 0 6px rgba(255, 182, 193, 0.3);
+    #pageDisplay span {
+      color: #888;
+      font-size: 16px;
+      text-align: center;
     }
 
-    .song-box {
+    /* Music Box Styling */
+    .music-box {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       background-color: #ffb6c1;
-      border-radius: 999px;
-      padding: 8px 12px;
-      margin: 16px auto;
-      max-width: 180px;
-      box-shadow: 0 0 8px rgba(255, 182, 193, 0.4);
-      animation: pulse 2s infinite;
-      transition: all 0.3s ease;
+      border-radius: 12px;
+      padding: 8px;
+      margin-top: 20px;
+      max-width: 50%;
+      margin: 20px auto;
     }
 
-    .song-box.paused {
-      animation: none;
-      opacity: 0.85;
-    }
-
-    .song-art {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
+    .music-box img {
+      width: 50px;
+      height: 50px;
       margin-right: 10px;
-      object-fit: cover;
+      border-radius: 8px;
     }
 
-    .song-name {
-      font-size: 0.9rem;
-      font-weight: bold;
-      color: #222;
-      text-align: left;
+    .music-box .song-name {
+      color: #000;
+      font-size: 18px;
+      margin-right: 15px;
     }
 
-    .play-btn {
-      background: none;
+    .music-box .play-btn {
+      background: #ff69b4;
+      color: white;
       border: none;
-      font-size: 1.2rem;
-      margin-left: auto;
+      padding: 10px 20px;
+      border-radius: 8px;
       cursor: pointer;
-      color: #222;
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px rgba(255, 182, 193, 0.4); }
-      50% { box-shadow: 0 0 20px rgba(255, 182, 193, 0.9); }
-      100% { box-shadow: 0 0 10px rgba(255, 182, 193, 0.4); }
+    .music-box .play-btn:hover {
+      background: #ff1493;
     }
 
-    @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+    /* Customizable Song Color */
+    .custom-color-box {
+      background-color: #ffb6c1; /* Change this color in the code */
+      border-radius: 12px;
+    }
+
+    /* Page Number Display Styling */
+    #pageNumber {
+      font-size: 18px;
+      color: #ffb6c1;
+      font-family: 'Georgia', serif;
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    /* Responsive Design for Mobile */
+    @media (max-width: 480px) {
+      #pageDisplay {
+        width: 90%;
+        height: auto;
+        max-width: 100%;
+        max-height: 400px;
+      }
+
+      .controls button {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+
+      .music-box {
+        max-width: 80%;
+      }
+
+      #pageNumber {
+        font-size: 16px;
+      }
+    }
   </style>
 </head>
 <body>
+  <h1>📖 Scrapbook</h1>
 
-  <!-- Song Player Box -->
-  <div class="song-box" id="songBox">
-    <img class="song-art" id="songArt" src="images/song.jpg" alt="Song Art">
-    <div class="song-name" id="songName">Your Song Name</div>
-    <button class="play-btn" onclick="togglePlay()">▶</button>
+  <!-- Scrapbook Modal -->
+  <div id="scrapbookModal">
+    <div style="max-width: 700px; margin: auto; background: #1a1a1a; padding: 20px; border-radius: 16px;">
+      
+      <!-- Controls for navigation -->
+      <div class="controls">
+        <button onclick="prevPage()">⬅ Prev</button>
+        <span id="pageNumber">Page 1</span>
+        <button onclick="nextPage()">Next ➡</button>
+      </div>
+
+      <!-- Image display area -->
+      <div id="pageDisplay">
+        <span id="placeholder">No image uploaded yet.</span>
+      </div>
+
+      <!-- Music Box Display -->
+      <div class="music-box">
+        <img src="images/song-image.jpg" alt="Song Image">
+        <span class="song-name" id="songName">Song Title</span>
+        <button class="play-btn" onclick="playSong()">Play</button>
+      </div>
+
+      <!-- Page Number -->
+      <div id="pageNumber">Page 1</div>
+
+    </div>
   </div>
-
-  <!-- Scrapbook Page with Polaroid Tilt -->
-  <div class="polaroid-wrapper" id="pageDisplay" style="--tilt: 0deg;">
-    <span style="color:#888;">No image uploaded yet.</span>
-  </div>
-
-  <!-- Page Indicator -->
-  <div id="pageNumber">Page 1</div>
-
-  <audio id="songPlayer" src=""></audio>
 
   <script>
     let currentPage = 1;
-    let isPlaying = false;
 
+    // Image links for pages
     const imageLinks = {
-      1: {
-        image: "images/test.jpg",
-        song: "songs/test.mp3",
-        songName: "Test Song",
-        color: "#ffb6c1",
-        songImage: "images/song.jpg",
-        caption: "March 2025 ✨",
-        tilt: "-2deg"
-      },
-      2: {
-        image: "images/photo2.jpg",
-        song: "songs/another.mp3",
-        songName: "Another Tune",
-        color: "#add8e6",
-        songImage: "images/song2.jpg",
-        caption: "A lovely memory 💖",
-        tilt: "2.5deg"
-      }
+      1: "images/test.jpg", // Replace with your real image URLs
+      2: null,
+      3: null
     };
 
-    const pageDisplay = document.getElementById("pageDisplay");
-    const pageNumber = document.getElementById("pageNumber");
-    const songPlayer = document.getElementById("songPlayer");
-    const songBox = document.getElementById("songBox");
-    const songName = document.getElementById("songName");
-    const songArt = document.getElementById("songArt");
+    // Song data (example for each page)
+    const songData = {
+      1: {
+        songName: "Song Title",
+        songImage: "images/song-image.jpg",
+        songFile: "songs/song.mp3",
+        songColor: "#ffb6c1" // Default color
+      },
+      2: null, // For testing purposes
+      3: null
+    };
 
-    function loadImage() {
-      const page = imageLinks[currentPage];
-      if (page && page.image) {
-        pageDisplay.innerHTML = `
-          <img src="${page.image}" alt="Page ${currentPage}">
-          <div class="caption">${page.caption || ''}</div>
-        `;
-        pageDisplay.style.setProperty('--tilt', page.tilt || '0deg');
+    // Load image and song for the current page
+    function loadImageAndSong() {
+      const imageUrl = imageLinks[currentPage];
+      const pageDisplay = document.getElementById("pageDisplay");
+      const songInfo = songData[currentPage];
+
+      // Update the image display
+      if (imageUrl) {
+        pageDisplay.innerHTML = `<img src="${imageUrl}" alt="Scrapbook Page Image">`;
       } else {
-        pageDisplay.innerHTML = `<span style="color:#888;">No image uploaded yet.</span>`;
-        pageDisplay.style.setProperty('--tilt', '0deg');
+        pageDisplay.innerHTML = `<span id="placeholder">No image uploaded yet.</span>`;
       }
 
-      pageNumber.textContent = `Page ${currentPage}`;
-
-      // Song player updates
-      if (page.song) {
-        songPlayer.src = page.song;
-        songName.textContent = page.songName;
-        songArt.src = page.songImage;
-        songBox.style.backgroundColor = page.color;
-        songBox.style.display = "flex";
-      } else {
-        songBox.style.display = "none";
-        songPlayer.pause();
-        isPlaying = false;
-        songBox.classList.add("paused");
+      // Update the song info box
+      if (songInfo) {
+        document.querySelector('.music-box img').src = songInfo.songImage;
+        document.querySelector('#songName').textContent = songInfo.songName;
+        document.querySelector('.music-box').style.backgroundColor = songInfo.songColor;
       }
+
+      // Update the page number display
+      document.getElementById("pageNumber").textContent = `Page ${currentPage}`;
     }
 
-    function togglePlay() {
-      if (isPlaying) {
-        songPlayer.pause();
-        isPlaying = false;
-        songBox.classList.add("paused");
-      } else {
-        songPlayer.play();
-        isPlaying = true;
-        songBox.classList.remove("paused");
-      }
+    // Navigate to the next page
+    function nextPage() {
+      currentPage++;
+      if (!imageLinks[currentPage]) currentPage = 1; // Loop back if no image
+      loadImageAndSong();
     }
 
-    function changePage(dir) {
-      const total = Object.keys(imageLinks).length;
-      currentPage += dir;
-      if (currentPage > total) currentPage = 1;
-      if (currentPage < 1) currentPage = total;
-      songPlayer.pause();
-      isPlaying = false;
-      songBox.classList.add("paused");
-      loadImage();
+    // Navigate to the previous page
+    function prevPage() {
+      currentPage--;
+      if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to last page
+      loadImageAndSong();
     }
 
-    // Arrow key navigation
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight") changePage(1);
-      if (e.key === "ArrowLeft") changePage(-1);
-    });
+    // Play the song (for example, in a future implementation, add a music player)
+    function playSong() {
+      alert('Play button clicked. Implement audio playback here.');
+    }
 
-    // Swipe navigation
-    let touchStartX = 0;
-    document.addEventListener("touchstart", (e) => {
-      touchStartX = e.touches[0].clientX;
-    });
-    document.addEventListener("touchend", (e) => {
-      const touchEndX = e.changedTouches[0].clientX;
-      if (touchEndX - touchStartX > 50) changePage(-1);
-      if (touchStartX - touchEndX > 50) changePage(1);
-    });
-
-    // Init
-    loadImage();
-    songBox.classList.add("paused");
+    // Initial load
+    loadImageAndSong();
   </script>
 </body>
 </html>
