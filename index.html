@@ -1,4 +1,4 @@
-7
+8
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -562,8 +562,15 @@
   </style>
 </head>
 <body>
-  <!-- Button to go to scrapbook page -->
-  <button class="back-btn" onclick="window.location.href='scrapbook.html'">📖 View Scrapbook</button>
+  <!-- Button to open scrapbook modal -->
+  <button class="back-btn" onclick="openScrapbook()">📖 View Scrapbook</button>
+
+  <script>
+    // Function to open the scrapbook modal
+    function openScrapbook() {
+      window.location.href = "scrapbook.html"; // Redirects to scrapbook.html
+    }
+  </script>
 </body>
 </html>
 </script>

@@ -19,16 +19,22 @@
       margin-bottom: 20px;
     }
 
-    /* Scrapbook Page Layout */
-    #scrapbookContainer {
-      max-width: 1000px;
-      margin: 0 auto;
+    /* Scrapbook Modal Container */
+    #scrapbookModal {
+      display: block;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 80%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      overflow: auto;
       padding: 20px;
-      background: #1a1a1a;
       border-radius: 16px;
     }
 
-    /* Controls for navigation */
     .controls {
       margin-bottom: 20px;
     }
@@ -46,97 +52,140 @@
       background-color: #ff1493;
     }
 
-    /* Image display box */
+    /* Image display box inside the modal */
     #pageDisplay {
       background: #000;
       border: 3px dashed #ffb6c1;
       border-radius: 12px;
       width: 100%;
-      height: 0;
-      padding-bottom: 133%; /* 3:4 aspect ratio */
+      height: 80%;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      position: relative;
     }
 
     #pageDisplay img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
     }
 
     #pageDisplay span {
       color: #888;
     }
 
-    /* Close button */
-    .close-btn {
+    /* Song HUD */
+    .song-hud {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 10px;
+      font-size: 14px;
+      border-top: 2px solid #ffb6c1;
+      z-index: 1001;
+      transition: background-color 0.3s ease;
+    }
+
+    .song-hud .song-name {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 80%;
+    }
+
+    .song-hud .play-btn {
       background-color: #ff69b4;
-      color: black;
-      padding: 10px 20px;
       border: none;
+      padding: 10px 15px;
+      color: #fff;
       border-radius: 8px;
       cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
     }
 
-    .close-btn:hover {
+    .song-hud .play-btn:hover {
       background-color: #ff1493;
-    }
-
-    /* Responsive Styles */
-    @media screen and (max-width: 768px) {
-      #scrapbookContainer {
-        width: 90%;
-        height: auto;
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      #scrapbookContainer {
-        width: 95%;
-        height: auto;
-      }
     }
   </style>
 </head>
 <body>
   <h1>📖 Scrapbook</h1>
 
-  <!-- Scrapbook Container -->
-  <div id="scrapbookContainer">
-    <div class="controls">
-      <button onclick="prevPage()">⬅ Prev</button>
-      <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
-      <button onclick="nextPage()">Next ➡</button>
-    </div>
+  <!-- Scrapbook Modal -->
+  <div id="scrapbookModal">
+    <div style="max-width: 700px; margin: auto; background: #1a1a1a; padding: 20px; border-radius: 16px;">
+      <h2 style="color: #ffb6c1;">Scrapbook Page</h2>
 
-    <!-- Image display area -->
-    <div id="pageDisplay">
-      <span id="placeholder">No image uploaded yet.</span>
-    </div>
+      <!-- Controls for navigation -->
+      <div class="controls">
+        <button onclick="prevPage()">⬅ Prev</button>
+        <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
+        <button onclick="nextPage()">Next ➡</button>
+      </div>
 
-    <!-- Close button to go back to index.html -->
-    <button class="close-btn" onclick="window.location.href='index.html'">✕ Close</button>
+      <!-- Image display area -->
+      <div id="pageDisplay">
+        <span id="placeholder">No image uploaded yet.</span>
+      </div>
+
+      <!-- Close button -->
+      <button class="close-btn" onclick="closeScrapbook()">✕ Close</button>
+    </div>
+  </div>
+
+  <!-- Song HUD (Instagram style) -->
+  <div id="songHUD" class="song-hud">
+    <span class="song-name" id="songName">Song Name</span>
+    <button id="playPauseBtn" class="play-btn" onclick="toggleSong()">Play</button>
   </div>
 
   <script>
     let currentPage = 1;
+    let song = new Audio();
+    let isPlaying = false;
 
-    // Image links for pages
+    // Image links for pages (same as before)
     const imageLinks = {
       1: "images/test.jpg", // Replace with your real image URLs
       2: null,
       3: null
     };
+
+    // Songs for pages (replace with actual paths)
+    const songs = {
+      1: "songs/song1.mp3", // Replace with your actual mp3 URLs
+      2: null,
+      3: null
+    };
+
+    // Background color customization for the song HUD
+    const pageBackgroundColors = {
+      1: "#ff69b4", // Page 1 will have a pink color
+      2: "#ff1493", // Page 2 will have a deeper pink color
+      3: "#8a2be2"  // Page 3 will have a purple color
+    };
+
+    // Open the scrapbook modal
+    function openScrapbook() {
+      document.getElementById("scrapbookModal").style.display = "block";
+      loadImage();
+      updateSongHUD();
+    }
+
+    // Close the scrapbook modal
+    function closeScrapbook() {
+      document.getElementById("scrapbookModal").style.display = "none";
+      song.pause();
+      isPlaying = false;
+      document.getElementById("playPauseBtn").textContent = "Play";
+    }
 
     // Load image for the current page
     function loadImage() {
@@ -158,6 +207,7 @@
       currentPage++;
       if (!imageLinks[currentPage]) currentPage = 1; // Loop back to the first page if image is not found
       loadImage();
+      updateSongHUD();
     }
 
     // Go to the previous page
@@ -165,10 +215,37 @@
       currentPage--;
       if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to the last page
       loadImage();
+      updateSongHUD();
     }
 
-    // Load the initial page
-    loadImage();
+    // Play or pause the song
+    function toggleSong() {
+      if (isPlaying) {
+        song.pause();
+        isPlaying = false;
+        document.getElementById("playPauseBtn").textContent = "Play";
+      } else {
+        song.src = songs[currentPage];
+        song.play();
+        isPlaying = true;
+        document.getElementById("playPauseBtn").textContent = "Pause";
+      }
+    }
+
+    // Update the song HUD (change background color for each page)
+    function updateSongHUD() {
+      const songNameElement = document.getElementById("songName");
+      const backgroundElement = document.getElementById("songHUD");
+
+      // Update the song name in the HUD
+      songNameElement.textContent = `Song for Page ${currentPage}`;
+      
+      // Apply the background color for the song HUD
+      backgroundElement.style.backgroundColor = pageBackgroundColors[currentPage] || '#1a1a1a'; // Default to dark color if no background specified
+    }
+
+    // Open the modal by default
+    openScrapbook();
   </script>
 </body>
 </html>
