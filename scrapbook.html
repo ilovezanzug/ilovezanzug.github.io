@@ -19,9 +19,9 @@
       margin-bottom: 20px;
     }
 
-    /* Scrapbook modal container */
+    /* Scrapbook Modal Container */
     #scrapbookModal {
-      display: none;
+      display: block;
       position: fixed;
       top: 50%;
       left: 50%;
@@ -74,6 +74,23 @@
     #pageDisplay span {
       color: #888;
     }
+
+    /* Close button */
+    .close-btn {
+      background-color: #ff69b4;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .close-btn:hover {
+      background-color: #ff1493;
+    }
   </style>
 </head>
 <body>
@@ -84,16 +101,20 @@
     <div style="max-width: 700px; margin: auto; background: #1a1a1a; padding: 20px; border-radius: 16px;">
       <h2 style="color: #ffb6c1;">Scrapbook Page</h2>
 
+      <!-- Controls for navigation -->
       <div class="controls">
         <button onclick="prevPage()">⬅ Prev</button>
         <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
         <button onclick="nextPage()">Next ➡</button>
-        <button onclick="closeScrapbook()" style="float: right; background: #ff69b4; color: black;">✕ Close</button>
       </div>
 
+      <!-- Image display area -->
       <div id="pageDisplay">
         <span id="placeholder">No image uploaded yet.</span>
       </div>
+
+      <!-- Close button -->
+      <button class="close-btn" onclick="closeScrapbook()">✕ Close</button>
     </div>
   </div>
 
@@ -136,16 +157,19 @@
     // Go to the next page
     function nextPage() {
       currentPage++;
-      if (!imageLinks[currentPage]) currentPage = 1;
+      if (!imageLinks[currentPage]) currentPage = 1; // Loop back to the first page if image is not found
       loadImage();
     }
 
     // Go to the previous page
     function prevPage() {
       currentPage--;
-      if (currentPage < 1) currentPage = Object.keys(imageLinks).length;
+      if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to the last page
       loadImage();
     }
+
+    // Open the modal by default
+    openScrapbook();
   </script>
 </body>
 </html>
