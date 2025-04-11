@@ -62,9 +62,10 @@
       justify-content: flex-start;
       padding: 10px;
       border-radius: 12px;
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto 20px;
+      width: 50%;
+      min-width: 180px;
+      max-width: 200px;
+      margin: 10px auto 30px;
       color: white;
       transition: background-color 0.3s ease;
     }
@@ -79,13 +80,14 @@
     .song-info {
       flex-grow: 1;
       text-align: left;
+      font-size: 14px;
     }
 
     .play-btn {
       background: none;
       border: none;
       color: white;
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
       margin-left: auto;
     }
@@ -124,7 +126,6 @@
     let currentPage = 1;
     let isPlaying = false;
 
-    // Your scrapbook content
     const scrapbookPages = {
       1: {
         image: "images/test.jpg",
@@ -134,7 +135,7 @@
         songColor: "#ff69b4"
       },
       2: {
-        image: null,
+        image: "images/other.jpg",
         song: "songs/track2.mp3",
         songTitle: "Memory Lane",
         songImage: "images/album2.jpg",
@@ -151,7 +152,6 @@
 
     const pageDisplay = document.getElementById("pageDisplay");
     const pageNumber = document.getElementById("pageNumber");
-
     const songBox = document.getElementById("songBox");
     const songTitle = document.getElementById("songTitle");
     const songImage = document.getElementById("songImage");
@@ -161,14 +161,14 @@
     function loadPage() {
       const page = scrapbookPages[currentPage];
 
-      // Load image
+      // Image
       if (page.image) {
         pageDisplay.innerHTML = `<img src="${page.image}" alt="Scrapbook Image">`;
       } else {
         pageDisplay.innerHTML = `<span id="placeholder" style="color: #888;">No image uploaded yet.</span>`;
       }
 
-      // Load song
+      // Song info
       songBox.style.backgroundColor = page.songColor || "#444";
       songTitle.textContent = page.songTitle || "No Song";
       songImage.src = page.songImage || "";
@@ -177,7 +177,7 @@
       isPlaying = false;
       playBtn.textContent = "▶";
 
-      // Update page number
+      // Page number
       pageNumber.textContent = `Page ${currentPage}`;
     }
 
