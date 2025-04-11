@@ -19,22 +19,16 @@
       margin-bottom: 20px;
     }
 
-    /* Scrapbook Modal Container */
-    #scrapbookModal {
-      display: none; /* Start hidden */
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      height: 80%;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 1000;
-      overflow: auto;
+    /* Scrapbook Page Layout */
+    #scrapbookContainer {
+      max-width: 1000px;
+      margin: 0 auto;
       padding: 20px;
+      background: #1a1a1a;
       border-radius: 16px;
     }
 
+    /* Controls for navigation */
     .controls {
       margin-bottom: 20px;
     }
@@ -52,7 +46,7 @@
       background-color: #ff1493;
     }
 
-    /* Image display box inside the modal */
+    /* Image display box */
     #pageDisplay {
       background: #000;
       border: 3px dashed #ffb6c1;
@@ -100,34 +94,16 @@
 
     /* Responsive Styles */
     @media screen and (max-width: 768px) {
-      #scrapbookModal {
+      #scrapbookContainer {
         width: 90%;
-        height: 70%;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .controls {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .controls button {
-        width: 100%;
+        height: auto;
       }
     }
 
     @media screen and (max-width: 480px) {
-      #scrapbookModal {
+      #scrapbookContainer {
         width: 95%;
-        height: 80%;
-      }
-
-      h1 {
-        font-size: 1.2rem;
+        height: auto;
       }
     }
   </style>
@@ -135,32 +111,25 @@
 <body>
   <h1>📖 Scrapbook</h1>
 
-  <!-- Scrapbook Modal -->
-  <div id="scrapbookModal">
-    <div style="max-width: 700px; margin: auto; background: #1a1a1a; padding: 20px; border-radius: 16px;">
-      <h2 style="color: #ffb6c1;">Scrapbook Page</h2>
-
-      <!-- Controls for navigation -->
-      <div class="controls">
-        <button onclick="prevPage()">⬅ Prev</button>
-        <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
-        <button onclick="nextPage()">Next ➡</button>
-      </div>
-
-      <!-- Image display area -->
-      <div id="pageDisplay" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd(event)">
-        <span id="placeholder">No image uploaded yet.</span>
-      </div>
-
-      <!-- Close button -->
-      <button class="close-btn" onclick="closeScrapbook()">✕ Close</button>
+  <!-- Scrapbook Container -->
+  <div id="scrapbookContainer">
+    <div class="controls">
+      <button onclick="prevPage()">⬅ Prev</button>
+      <span id="pageNumber" style="color: #ffb6c1;">Page 1</span>
+      <button onclick="nextPage()">Next ➡</button>
     </div>
+
+    <!-- Image display area -->
+    <div id="pageDisplay">
+      <span id="placeholder">No image uploaded yet.</span>
+    </div>
+
+    <!-- Close button to go back to index.html -->
+    <button class="close-btn" onclick="window.location.href='index.html'">✕ Close</button>
   </div>
 
   <script>
     let currentPage = 1;
-    let touchStartX = 0;
-    let touchEndX = 0;
 
     // Image links for pages
     const imageLinks = {
@@ -168,17 +137,6 @@
       2: null,
       3: null
     };
-
-    // Open the scrapbook modal
-    function openScrapbook() {
-      document.getElementById("scrapbookModal").style.display = "block";
-      loadImage();
-    }
-
-    // Close the scrapbook modal
-    function closeScrapbook() {
-      document.getElementById("scrapbookModal").style.display = "none";
-    }
 
     // Load image for the current page
     function loadImage() {
@@ -209,28 +167,8 @@
       loadImage();
     }
 
-    // Detect swipe gesture (touch events)
-    function handleTouchStart(event) {
-      touchStartX = event.touches[0].clientX;
-    }
-
-    function handleTouchEnd(event) {
-      touchEndX = event.changedTouches[0].clientX;
-      handleSwipeGesture();
-    }
-
-    function handleSwipeGesture() {
-      if (touchStartX - touchEndX > 100) {
-        // Left swipe: Go to the next page
-        nextPage();
-      } else if (touchEndX - touchStartX > 100) {
-        // Right swipe: Go to the previous page
-        prevPage();
-      }
-    }
-
-    // Initialize by opening the scrapbook
-    openScrapbook();
+    // Load the initial page
+    loadImage();
   </script>
 </body>
 </html>
