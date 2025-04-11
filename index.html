@@ -1,4 +1,6 @@
-code work
+working index with scrapbook 2
+
+hello thereeeee...
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -313,8 +315,8 @@ code work
   </script>
   <button class="back-btn" onclick="openScrapbook()">📖 View Scrapbook</button>
   <!-- Chat Toggle Button -->
+<button id="toggle-chat" class="back-btn" style="margin-top: 40px;">💬 Open Chat</button>
 
-<div id="custom-section" style="display: none;">
 <!-- Embedded Chatbox -->
 <div id="embedded-chatbox" style="display: none; margin-top: 20px;">
   <div id="chat-container" style="display: none;">
@@ -608,25 +610,19 @@ code work
       pageNumber.textContent = `Page ${currentPage}`;
     }
 
-// Go to the next page
-function nextPage() {
-  currentPage++;
-  // If the next page doesn't exist, loop back to the first page
-  if (!imageLinks[currentPage]) {
-    currentPage = 1; // Go back to the first page if no more pages
-  }
-  loadImage();
-}
+    // Go to the next page
+    function nextPage() {
+      currentPage++;
+      if (!imageLinks[currentPage]) currentPage = 1; // Loop back to first page
+      loadImage();
+    }
 
-// Go to the previous page
-function prevPage() {
-  currentPage--;
-  // If the current page is less than 1, loop back to the last page
-  if (currentPage < 1) {
-    currentPage = Object.keys(imageLinks).length; // Go to the last page
-  }
-  loadImage();
-}
+    // Go to the previous page
+    function prevPage() {
+      currentPage--;
+      if (currentPage < 1) currentPage = Object.keys(imageLinks).length; // Loop back to last page
+      loadImage();
+    }
 
     // Swipe gesture functionality
     function handleTouchStart(event) {
@@ -657,4 +653,3 @@ function prevPage() {
 </script>
 </body>
 </html>
-
